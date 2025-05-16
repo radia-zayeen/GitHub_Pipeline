@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+
+    stages {
+
+        stage("Build") {
+            steps {
+                echo "Building..."
+            }
+            post{
+                always{
+                    mail to: "radia.zayeen@gmail.com",
+                    subject: "Build status email",
+                    body: "Build was succesful!"
+                }
+            }
+        }
+
+        stage("Test") {
+            steps {
+                echo "Testing..."
+            }
+        }
+
+        stage("Deploy") {
+            steps {
+                echo "Deploying..."
+            }
+        }
+    }
+}
