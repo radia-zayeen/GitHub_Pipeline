@@ -1,20 +1,8 @@
 pipeline {
     agent any
 
-    environment {
-        RECIPIENT_EMAIL = 'radia.zayeen@gmail.com'
-    }
-
 
     stages {
-
-        stage('Checkout') {
-            steps {
-                echo 'Checking out source code...'
-                git 'https://github.com/radia-zayeen/GitHub_Pipeline.git'
-            }
-        }
-
 
         stage("Build") {
             steps {
@@ -22,61 +10,11 @@ pipeline {
             }
         }
 
-        stage('Test') {
-        steps {
-            script {
-                try {
-                    echo 'Running tests...'
-                
-                    currentBuild.result = 'SUCCESS'
-                } catch (e) {
-                    currentBuild.result = 'FAILURE'
-                    throw e
-                }
+        stage("Test") {
+            steps {
+                echo "Testing..."
             }
         }
-        post {
-            always {
-                emailext (
-                    to: 'radia.zayeen@gmail.com',
-                    subject: "Build Test Stage: ${currentBuild.result}",
-                    body: """Test stage completed with status: ${currentBuild.result}
-                    
-                    Please check the attached logs.""",
-                    attachmentsPattern: '**/test-output/*.log',
-                    attachLog: true
-                )
-            }
-        }
-    }
-
-    stage('Security Scan') {
-        steps {
-            script {
-                try {
-                    echo 'Running security scan...'
-                    
-                    currentBuild.result = 'SUCCESS'
-                } catch (e) {
-                    currentBuild.result = 'FAILURE'
-                    throw e
-                }
-            }
-        }
-        post {
-            always {
-                emailext (
-                    to: 'radia.zayeen@gmail.com',
-                    subject: "Security Scan Stage: ${currentBuild.result}",
-                    body: """Security scan stage completed with status: ${currentBuild.result}
-
-                    Please find the logs attached.""",
-                    attachmentsPattern: '**/security-scan/*.log',
-                    attachLog: true
-                )
-            }
-        }
-    }
 
         stage("Deploy") {
             steps {
