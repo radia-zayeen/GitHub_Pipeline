@@ -5,9 +5,6 @@ pipeline {
         RECIPIENT_EMAIL = 'radia.zayeen@gmail.com'
     }
 
-    tools {
-        nodejs 'NodeJS 18' 
-    }
 
     stages {
 
